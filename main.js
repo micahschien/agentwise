@@ -1,4 +1,8 @@
 const SIGNUP_URL='https://script.google.com/macros/s/AKfycbzfpbgY7aK1XWdBiBmMIHbhzhNP5hsUP-qNHOv-Mru-D_Q4DQqXiLRnqrkwjI31Sh_3/exec'; // Google Apps Script web app URL; empty = placeholder mode
+// Source tracking: ?ref= (sanitized) is remembered for the visit
+function cleanRef(v){return String(v||'').toLowerCase().replace(/[^a-z0-9_-]/g,'').slice(0,40)}
+try{const r=cleanRef(new URLSearchParams(location.search).get('ref'));if(r)sessionStorage.setItem('ref',r)}catch(e){}
+function getRef(){try{return cleanRef(sessionStorage.getItem('ref'))}catch(e){return ''}}
 // Mobile menu
 const mb=document.querySelector('.menu-btn'),nv=document.querySelector('.nav');
 mb&&mb.addEventListener('click',()=>{const o=nv.classList.toggle('open');mb.setAttribute('aria-expanded',o)});
@@ -12,7 +16,7 @@ document.querySelectorAll('[data-signup]').forEach(f=>f.addEventListener('submit
   const btn=f.querySelector('button');btn&&(btn.disabled=true);
   try{
     await fetch(SIGNUP_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/x-www-form-urlencoded'},
-      body:new URLSearchParams({email:v,source:f.id||location.pathname})});
+      body:new URLSearchParams({email:v,source:getRef()||f.id||location.pathname})});
     m.textContent="You're in! Thanks for subscribing.";f.reset();
   }catch(err){m.textContent='Something went wrong. Please try again in a moment.'}
   finally{btn&&(btn.disabled=false)}
