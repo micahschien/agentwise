@@ -42,3 +42,4 @@ a.card:hover{border-color:var(--accent)}.card p{color:var(--muted);margin:.4em 0
 .foot{display:flex;justify-content:space-between;flex-wrap:wrap;gap:24px}.foot-nav{display:flex;flex-wrap:wrap;gap:16px;color:var(--muted);font-size:.9rem}
 @media(max-width:720px){.menu-btn{display:block}.nav{display:none;position:absolute;top:64px;left:0;right:0;background:#fff;border-bottom:1px solid var(--border);flex-direction:column;padding:16px 24px;gap:12px}.nav.open{display:flex}.hero{padding:56px 0 32px}}
 [hidden]{display:none!important}
+.issue-list{margin:.4em 0 0;padding-left:1.2em}.issue-list li{margin:.5em 0}.issue-list a{color:var(--accent)}
