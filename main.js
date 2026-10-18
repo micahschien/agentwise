@@ -2,7 +2,7 @@ const SIGNUP_URL='https://script.google.com/macros/s/AKfycbzfpbgY7aK1XWdBiBmMIHb
 // Mobile menu
 const mb=document.querySelector('.menu-btn'),nv=document.querySelector('.nav');
 mb&&mb.addEventListener('click',()=>{const o=nv.classList.toggle('open');mb.setAttribute('aria-expanded',o)});
-// Signup: set SIGNUP_URL to the deployed Google Apps Script web app URL (see /workspace/vibestack-signup/README.md).
+// Agentwise signup: set SIGNUP_URL to the deployed Google Apps Script web app URL (see /workspace/vibestack-signup/README.md).
 // While empty, forms show the "not live yet" placeholder.
 document.querySelectorAll('[data-signup]').forEach(f=>f.addEventListener('submit',async e=>{
   e.preventDefault();const i=f.querySelector('input'),m=f.querySelector('.form-msg');
