@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Build a to-do list that saves with AI · Agentwise</title><meta name="description" content="Step-by-step guide: build a to-do list that remembers your tasks after reload, with copyable AI prompts, checkpoints and complete tested code.">
+<link rel="canonical" href="https://micahschien.github.io/agentwise/guide-todo.html"><link rel="icon" href="favicon.svg" type="image/svg+xml"><meta name="theme-color" content="#4f46e5">
+<meta property="og:type" content="website"><meta property="og:site_name" content="Agentwise"><meta property="og:title" content="Build a to-do list that saves with AI · Agentwise"><meta property="og:description" content="Step-by-step guide: build a to-do list that remembers your tasks after reload, with copyable AI prompts, checkpoints and complete tested code."><meta property="og:url" content="https://micahschien.github.io/agentwise/guide-todo.html"><meta property="og:image" content="https://micahschien.github.io/agentwise/og.png"><meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="style.css"></head><body>
+<header class="site-header"><div class="wrap bar"><a class="logo" href="index.html"><span class="dot"></span>Agentwise</a>
+<button class="menu-btn" aria-label="Toggle menu" aria-expanded="false">Menu</button><nav class="nav"><a href="guides.html" aria-current="page">Guides</a><a href="recipes.html">Recipes</a><a href="compare.html">Compare</a><a href="prices.html">Prices</a><a href="tools.html">Tools</a><a href="prompts.html">Prompts</a><a href="starter-kit.html">Starter Kit</a><a href="newsletter.html">Newsletter</a><a href="pro.html" class="nav-pro">Pro</a></nav></div></header>
+<main><section class="page-head"><div class="wrap"><p class="eyebrow">Project guide · Web app</p><h1>Build a to-do list that saves with AI</h1><p class="lead">Add tasks, tick them off, delete them, clear finished ones. Your list is still there when you reload, because it saves in your browser.</p>
+<p class="actions"><a class="btn" href="demos/todo.html" target="_blank" rel="noopener">Try the finished version</a> <a class="btn ghost" href="#final-code-wrap">Jump to the code</a></p>
+<p class="muted small">Free. Works with any AI chat or coding assistant. The finished code on this page is the exact file behind the demo, and we test it automatically (in a real browser) every time the site changes.</p></div></section>
+<section class="wrap section guide"><div class="two-col"><div class="card flat"><h2>You will learn</h2><ul class="checks"><li>Turning an array into a list on the page</li><li>Saving data with <code>localStorage</code> and JSON</li><li>Why <code>textContent</code> is safer than <code>innerHTML</code></li><li>Counting with <code>filter</code></li></ul></div>
+<div class="card flat"><h2>You need</h2><ul class="checks"><li>A web browser and a text editor (Notepad, TextEdit in plain-text mode, or VS Code)</li><li>Any AI assistant that writes code. Under 13? Ask a parent which tools you're allowed to use; many AI tools have age rules.</li><li>No installs, no accounts on our side, no money</li></ul></div></div>
+<h2 class="mt">How to use this guide</h2><p>Do the steps in order. Paste each prompt into your AI assistant, replace anything in [square brackets], and save the full answer as <code>index.html</code>. Then do the checkpoint before you move on. AI answers vary, so yours won't match ours exactly. That's fine if the checkpoint passes. Stuck? Compare with the finished code at the bottom.</p>
+<ol class="toc"><li><a href="#step-1">Add tasks to a list</a></li><li><a href="#step-2">Tick off and delete</a></li><li><a href="#step-3">Remember tasks after reload</a></li><li><a href="#step-4">Count and clear</a></li><li><a href="#step-5">Test that it is safe</a></li><li><a href="#final-code-wrap">Finished code</a></li></ol>
+<div class="stack"><article class="card flat prompt" id="step-1"><span class="tag">Step 1 · Add</span><h3>Add tasks to a list</h3><pre class="prompt-text">Create a single-file to-do app: one index.html with CSS and JavaScript inside, no libraries. Keep tasks in an array called tasks where each item is { text: &quot;...&quot;, done: false }. A form with a text box and an Add button adds a task (pressing Enter should also work). Ignore empty or spaces-only input. Write one render() function that rebuilds the list from the array. Set task text with textContent, not innerHTML.</pre><button class="btn small-btn" data-copy>Copy prompt</button><p class="small"><strong>Checkpoint:</strong> Add three tasks. Try adding an empty one: nothing should happen.</p><p class="small muted"><strong>If it breaks:</strong> "Pressing Enter reloads the page. Explain preventDefault and fix it."</p></article><article class="card flat prompt" id="step-2"><span class="tag">Step 2 · Done</span><h3>Tick off and delete</h3><pre class="prompt-text">Give each task a checkbox and a Delete button. Ticking the checkbox sets done to true and shows the text crossed out. Delete removes that task from the array. After every change, call render().
+
+[paste your current code]</pre><button class="btn small-btn" data-copy>Copy prompt</button><p class="small"><strong>Checkpoint:</strong> Tick one task and delete another. The right ones change.</p><p class="small muted"><strong>If it breaks:</strong> "Delete removes the wrong task. Explain how the index is used and fix it."</p></article><article class="card flat prompt" id="step-3"><span class="tag">Step 3 · Save</span><h3>Remember tasks after reload</h3><pre class="prompt-text">Save the tasks array to localStorage under the key &quot;tasks&quot; every time it changes, using JSON.stringify. When the page loads, read it back with JSON.parse, or start with an empty array if nothing is saved.
+
+[paste your current code]</pre><button class="btn small-btn" data-copy>Copy prompt</button><p class="small"><strong>Checkpoint:</strong> Add tasks, tick one, then reload the page. Everything is still there, including the tick.</p><p class="small muted"><strong>If it breaks:</strong> "After reload I see [object Object]. Explain why JSON.stringify is needed."</p></article><article class="card flat prompt" id="step-4"><span class="tag">Step 4 · Polish</span><h3>Count and clear</h3><pre class="prompt-text">Show how many tasks are not done yet, like &quot;2 tasks left&quot; (and &quot;1 task left&quot; for one). Add a &quot;Clear done&quot; button that removes all finished tasks. Make long task text wrap instead of overflowing on a phone.
+
+[paste your current code]</pre><button class="btn small-btn" data-copy>Copy prompt</button><p class="small"><strong>Checkpoint:</strong> Add a very long task with no spaces and check the page on a narrow screen. Nothing should overflow.</p></article><article class="card flat prompt" id="step-5"><span class="tag">Step 5 · Safety</span><h3>Test that it is safe</h3><pre class="prompt-text">Explain to me like I&#x27;m 12 why my to-do app uses textContent instead of innerHTML for task text. Then give me 3 test inputs I should try typing into my app to check it handles odd text safely, and tell me what should happen for each.</pre><button class="btn small-btn" data-copy>Copy prompt</button><p class="small"><strong>Checkpoint:</strong> Type <code>&lt;b&gt;hi&lt;/b&gt;</code> as a task. You should see those exact characters, not bold text.</p></article></div>
+<article class="card flat prompt" id="final-code-wrap"><span class="tag">Finished code · tested</span><h2>The complete file</h2><p>Copy this into <code>index.html</code> and open it in your browser. This is the same file as the <a href="demos/todo.html" target="_blank" rel="noopener">demo</a>.</p><pre class="prompt-text code" id="final-code">&lt;!doctype html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;utf-8&quot;&gt;
+&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width,initial-scale=1&quot;&gt;
+&lt;title&gt;To-do list&lt;/title&gt;
+&lt;style&gt;
+  body { margin: 0; font-family: system-ui, sans-serif; background: #f9fafb; color: #111827; }
+  main { max-width: 520px; margin: 40px auto; padding: 0 16px; }
+  form { display: flex; gap: 8px; }
+  input[type=text] { flex: 1; min-width: 0; padding: 12px; font: inherit; border: 1px solid #e5e7eb; border-radius: 8px; }
+  button { font: inherit; padding: 10px 14px; border-radius: 8px; border: 0; background: #4f46e5; color: #fff; cursor: pointer; }
+  ul { list-style: none; padding: 0; }
+  li { display: flex; align-items: center; gap: 10px; background: #fff; border: 1px solid #e5e7eb;
+       border-radius: 8px; padding: 10px 12px; margin: 8px 0; }
+  li span { flex: 1; overflow-wrap: anywhere; }
+  li.done span { text-decoration: line-through; color: #9ca3af; }
+  li button { background: none; color: #dc2626; padding: 4px 8px; }
+  #footer { display: flex; justify-content: space-between; align-items: center; color: #6b7280; }
+  #clear { background: none; color: #4f46e5; padding: 4px 0; }
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;main&gt;
+  &lt;h1&gt;My to-do list&lt;/h1&gt;
+  &lt;form id=&quot;add-form&quot;&gt;
+    &lt;input id=&quot;new-task&quot; type=&quot;text&quot; placeholder=&quot;What do you need to do?&quot; aria-label=&quot;New task&quot; maxlength=&quot;200&quot;&gt;
+    &lt;button type=&quot;submit&quot;&gt;Add&lt;/button&gt;
+  &lt;/form&gt;
+  &lt;ul id=&quot;list&quot;&gt;&lt;/ul&gt;
+  &lt;div id=&quot;footer&quot;&gt;&lt;span id=&quot;count&quot;&gt;&lt;/span&gt;&lt;button id=&quot;clear&quot; type=&quot;button&quot;&gt;Clear done&lt;/button&gt;&lt;/div&gt;
+&lt;/main&gt;
+&lt;script&gt;
+// --- Load saved tasks (or start with an empty list) ---
+// Each task looks like: { text: &quot;Feed the cat&quot;, done: false }
+let tasks = JSON.parse(localStorage.getItem(&quot;tasks&quot;) || &quot;[]&quot;);
+
+const form = document.getElementById(&quot;add-form&quot;);
+const input = document.getElementById(&quot;new-task&quot;);
+const list = document.getElementById(&quot;list&quot;);
+const count = document.getElementById(&quot;count&quot;);
+
+// --- Save tasks so they survive a page reload ---
+function save() {
+  localStorage.setItem(&quot;tasks&quot;, JSON.stringify(tasks));
+}
+
+// --- Rebuild the list on the page from the tasks array ---
+function render() {
+  list.innerHTML = &quot;&quot;;
+  tasks.forEach((task, i) =&gt; {
+    const li = document.createElement(&quot;li&quot;);
+    if (task.done) li.className = &quot;done&quot;;
+
+    const box = document.createElement(&quot;input&quot;);
+    box.type = &quot;checkbox&quot;;
+    box.checked = task.done;
+    box.setAttribute(&quot;aria-label&quot;, &quot;Done&quot;);
+    box.addEventListener(&quot;change&quot;, () =&gt; { task.done = box.checked; save(); render(); });
+
+    const label = document.createElement(&quot;span&quot;);
+    label.textContent = task.text; // textContent is safe: it never runs HTML
+
+    const del = document.createElement(&quot;button&quot;);
+    del.textContent = &quot;Delete&quot;;
+    del.addEventListener(&quot;click&quot;, () =&gt; { tasks.splice(i, 1); save(); render(); });
+
+    li.append(box, label, del);
+    list.appendChild(li);
+  });
+  const left = tasks.filter(t =&gt; !t.done).length;
+  count.textContent = left + (left === 1 ? &quot; task left&quot; : &quot; tasks left&quot;);
+}
+
+// --- Add a new task when the form is submitted ---
+form.addEventListener(&quot;submit&quot;, e =&gt; {
+  e.preventDefault();
+  const text = input.value.trim();
+  if (!text) return;
+  tasks.push({ text: text, done: false });
+  input.value = &quot;&quot;;
+  save();
+  render();
+});
+
+// --- Remove every finished task ---
+document.getElementById(&quot;clear&quot;).addEventListener(&quot;click&quot;, () =&gt; {
+  tasks = tasks.filter(t =&gt; !t.done);
+  save();
+  render();
+});
+
+render();
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</pre><button class="btn small-btn" data-copy>Copy code</button> <a class="btn ghost small-btn" href="demos/todo.html" download="index.html">Download index.html</a></article>
+<h2 class="mt">Common problems</h2><dl class="faq"><dt>Tasks vanish on reload</dt><dd>You save but never load, or load before saving. Read localStorage once at the start, and save after every change.</dd><dt>[object Object] in storage</dt><dd>Use <code>JSON.stringify</code> to save and <code>JSON.parse</code> to load.</dd><dt>Typed HTML shows up formatted</dt><dd>Use <code>textContent</code> for user text. <code>innerHTML</code> runs it as HTML.</dd></dl>
+<h2 class="mt">Make it yours</h2><p>Pick one. Ask for it as a single small change, then test.</p><ul class="checks"><li>Edit a task by double-clicking it</li><li>Add filters: All, Active, Done</li><li>Drag to reorder tasks</li><li>Add due dates and sort by them</li></ul>
+<p class="muted small">Want to share it? Our <a href="recipes.html#ship">ship-it recipe</a> shows how to put it online with GitHub Pages (GitHub requires users to be 13+, so younger builders need a parent's account).</p></section><section class="wrap section"><div class="card flat cta"><span class="tag">Coming with Agentwise Pro</span><h2>Want more guides like this?</h2><p>Pro will add more full project guides and the 100-prompt Game Builder Pack. It isn't for sale yet. Join the waitlist and we'll email you once when it launches.</p><p><a class="btn" href="pro.html">See what's in Pro</a></p></div></section></main>
+<footer class="site-footer"><div class="wrap foot"><div class="foot-brand"><a class="logo" href="index.html"><span class="dot"></span>Agentwise</a><p class="muted small">Step-by-step guides for building games and small apps with AI. A young, independent project.</p></div>
+<nav class="foot-nav" aria-label="Footer"><div><h4>Build</h4><a href="guides.html">Project guides</a><a href="recipes.html">Agent recipes</a><a href="starter-kit.html">Game Jam Starter Kit</a><a href="prompts.html">Prompts</a><a href="lessons.html">Lessons</a></div><div><h4>Choose tools</h4><a href="compare.html">Compare tools</a><a href="prices.html">Prices</a><a href="tools.html">Tools directory</a><a href="use-cases.html">Use cases</a></div><div><h4>News</h4><a href="daily.html">Daily feed</a><a href="newsletter.html">Newsletter</a></div><div><h4>Agentwise</h4><a href="index.html">Home</a><a href="pro.html">Pro (waitlist)</a><a href="about.html">About</a><a href="about.html#money">How we make money</a><a href="about.html#privacy">Privacy</a></div></nav></div><div class="wrap"><p class="muted small">© 2026 Agentwise. No ads. No affiliate links right now; if we add any, they will be labeled (<a href="about.html#money">how we make money</a>). Opinions are ours and not for sale. Tool names belong to their owners.</p></div></footer>
+<script src="main.js" defer></script></body></html>

@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Build a dodge game with AI · Agentwise</title><meta name="description" content="Step-by-step guide: build a browser dodge game with an AI assistant. Six copyable prompts, checkpoints, and the complete tested code.">
+<link rel="canonical" href="https://micahschien.github.io/agentwise/guide-dodge.html"><link rel="icon" href="favicon.svg" type="image/svg+xml"><meta name="theme-color" content="#4f46e5">
+<meta property="og:type" content="website"><meta property="og:site_name" content="Agentwise"><meta property="og:title" content="Build a dodge game with AI · Agentwise"><meta property="og:description" content="Step-by-step guide: build a browser dodge game with an AI assistant. Six copyable prompts, checkpoints, and the complete tested code."><meta property="og:url" content="https://micahschien.github.io/agentwise/guide-dodge.html"><meta property="og:image" content="https://micahschien.github.io/agentwise/og.png"><meta name="twitter:card" content="summary_large_image">
+<link rel="stylesheet" href="style.css"></head><body>
+<header class="site-header"><div class="wrap bar"><a class="logo" href="index.html"><span class="dot"></span>Agentwise</a>
+<button class="menu-btn" aria-label="Toggle menu" aria-expanded="false">Menu</button><nav class="nav"><a href="guides.html" aria-current="page">Guides</a><a href="recipes.html">Recipes</a><a href="compare.html">Compare</a><a href="prices.html">Prices</a><a href="tools.html">Tools</a><a href="prompts.html">Prompts</a><a href="starter-kit.html">Starter Kit</a><a href="newsletter.html">Newsletter</a><a href="pro.html" class="nav-pro">Pro</a></nav></div></header>
+<main><section class="page-head"><div class="wrap"><p class="eyebrow">Project guide · Game</p><h1>Build a dodge game with AI</h1><p class="lead">Move a square left and right, dodge falling blocks, beat your best score. Works with keyboard and touch. One HTML file, no libraries.</p>
+<p class="actions"><a class="btn" href="demos/dodge.html" target="_blank" rel="noopener">Try the finished version</a> <a class="btn ghost" href="#final-code-wrap">Jump to the code</a></p>
+<p class="muted small">Free. Works with any AI chat or coding assistant. The finished code on this page is the exact file behind the demo, and we test it automatically (in a real browser) every time the site changes.</p></div></section>
+<section class="wrap section guide"><div class="two-col"><div class="card flat"><h2>You will learn</h2><ul class="checks"><li>A game loop with <code>requestAnimationFrame</code></li><li>Keyboard and touch input</li><li>Rectangle collision checks</li><li>Saving a high score with <code>localStorage</code></li></ul></div>
+<div class="card flat"><h2>You need</h2><ul class="checks"><li>A web browser and a text editor (Notepad, TextEdit in plain-text mode, or VS Code)</li><li>Any AI assistant that writes code. Under 13? Ask a parent which tools you're allowed to use; many AI tools have age rules.</li><li>No installs, no accounts on our side, no money</li></ul></div></div>
+<h2 class="mt">How to use this guide</h2><p>Do the steps in order. Paste each prompt into your AI assistant, replace anything in [square brackets], and save the full answer as <code>index.html</code>. Then do the checkpoint before you move on. AI answers vary, so yours won't match ours exactly. That's fine if the checkpoint passes. Stuck? Compare with the finished code at the bottom.</p>
+<ol class="toc"><li><a href="#step-1">Ask for the smallest possible start</a></li><li><a href="#step-2">Add falling blocks</a></li><li><a href="#step-3">Collisions, score and game over</a></li><li><a href="#step-4">Restart and a saved best score</a></li><li><a href="#step-5">Touch controls and a canvas that fits phones</a></li><li><a href="#step-6">Understand it and make it yours</a></li><li><a href="#final-code-wrap">Finished code</a></li></ol>
+<div class="stack"><article class="card flat prompt" id="step-1"><span class="tag">Step 1 · Player only</span><h3>Ask for the smallest possible start</h3><pre class="prompt-text">Create a single-file browser game: one index.html with the CSS and JavaScript inside, no libraries. Add a 400x600 &lt;canvas&gt;. Draw a 40x40 square near the bottom that I can move left and right with the arrow keys and with A/D. It must stop at the edges of the canvas. Use a game loop with requestAnimationFrame. Nothing else yet: no enemies, no score. Put a short comment above each function saying what it does.</pre><button class="btn small-btn" data-copy>Copy prompt</button><p class="small"><strong>Checkpoint:</strong> Open index.html in your browser. Hold the left arrow: the square moves and stops at the edge. Same on the right.</p><p class="small muted"><strong>If it breaks:</strong> "The square does not move. Here is the error from the browser console (F12 → Console): [paste]. Explain the cause in one sentence, then fix only that."</p></article><article class="card flat prompt" id="step-2"><span class="tag">Step 2 · Blocks</span><h3>Add falling blocks</h3><pre class="prompt-text">Add falling blocks to my game. Every 40 frames, create a block 20px tall with a random width between 30 and 80px at a random x position above the top of the canvas. Move all blocks down each frame. Remove blocks once they fall below the canvas so the list doesn&#x27;t grow forever. Keep the speeds in named constants at the top of the script. Only change what is needed and show me the full file.
+
+[paste your current code]</pre><button class="btn small-btn" data-copy>Copy prompt</button><p class="small"><strong>Checkpoint:</strong> Blocks fall from random places. Open the console and type <code>blocks.length</code> a few times: the number should stay small, not keep growing.</p><p class="small muted"><strong>If it breaks:</strong> "Blocks are never removed. Show me the line that should remove them and explain how filter works."</p></article><article class="card flat prompt" id="step-3"><span class="tag">Step 3 · Rules</span><h3>Collisions, score and game over</h3><pre class="prompt-text">Add the rules: if the player square touches a block, the game stops and shows &quot;Game over! Score X&quot;. Each block that falls off the bottom without touching the player adds 1 point. Show the score in an HTML element above the canvas (not drawn on the canvas) so it is easy to read. Make the blocks fall slightly faster as the score goes up. Use a simple rectangle overlap check in a function called hits(a, b).
+
+[paste your current code]</pre><button class="btn small-btn" data-copy>Copy prompt</button><p class="small"><strong>Checkpoint:</strong> Stand still: you get hit and see "Game over". Move around: the score goes up as blocks pass.</p><p class="small muted"><strong>If it breaks:</strong> "The game ends even when blocks don't touch me. Print the player and block positions with console.log when hits() returns true, and explain what is wrong."</p></article><article class="card flat prompt" id="step-4"><span class="tag">Step 4 · Replay</span><h3>Restart and a saved best score</h3><pre class="prompt-text">Add a start screen and restarting: the game waits until I press Space, and after game over Space starts a new round with score 0 and no blocks. Save the best score in localStorage under the key &quot;dodgeBest&quot; and show it next to the score. Remember that localStorage stores text, so convert it to a number. Stop Space and the arrow keys from scrolling the page.
+
+[paste your current code]</pre><button class="btn small-btn" data-copy>Copy prompt</button><p class="small"><strong>Checkpoint:</strong> Play twice. Reload the page: your best score is still there. Pressing Space does not scroll the page.</p><p class="small muted"><strong>If it breaks:</strong> "My best score shows as NaN or 0 after reload. Explain why and fix it."</p></article><article class="card flat prompt" id="step-5"><span class="tag">Step 5 · Phones</span><h3>Touch controls and a canvas that fits phones</h3><pre class="prompt-text">Make the game playable on a phone: the canvas should shrink to fit narrow screens (max 400px wide) without stretching. Tapping the canvas starts the game, and dragging a finger moves the player to under the finger. Use pointer events and convert the screen position into canvas coordinates using getBoundingClientRect. Add touch-action: none to the canvas so dragging does not scroll.
+
+[paste your current code]</pre><button class="btn small-btn" data-copy>Copy prompt</button><p class="small"><strong>Checkpoint:</strong> Open the page on a phone (or in your browser's device mode, F12 → toggle device toolbar). Tap to start and drag to move. The player follows your finger.</p><p class="small muted"><strong>If it breaks:</strong> "The player is offset from my finger on small screens. Explain the canvas size vs display size problem and fix moveTo."</p></article><article class="card flat prompt" id="step-6"><span class="tag">Step 6 · Learn</span><h3>Understand it and make it yours</h3><pre class="prompt-text">Explain this game code to me like I&#x27;m 12. List the main parts (setup, game loop, input, collision, drawing, saving) and which function does each job. Then tell me which 3 constants I can change to make the game easier or harder, and suggest one new feature I could add next in a single small step.
+
+[paste your final code]</pre><button class="btn small-btn" data-copy>Copy prompt</button><p class="small"><strong>Checkpoint:</strong> Change <code>SPAWN_EVERY</code> from 40 to 25 and reload. More blocks should fall. If you can explain why, you understand the loop.</p></article></div>
+<article class="card flat prompt" id="final-code-wrap"><span class="tag">Finished code · tested</span><h2>The complete file</h2><p>Copy this into <code>index.html</code> and open it in your browser. This is the same file as the <a href="demos/dodge.html" target="_blank" rel="noopener">demo</a>.</p><pre class="prompt-text code" id="final-code">&lt;!doctype html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+&lt;head&gt;
+&lt;meta charset=&quot;utf-8&quot;&gt;
+&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width,initial-scale=1&quot;&gt;
+&lt;title&gt;Dodge&lt;/title&gt;
+&lt;style&gt;
+  body { margin: 0; font-family: system-ui, sans-serif; background: #111827; color: #f9fafb;
+         display: flex; flex-direction: column; align-items: center; padding: 16px; }
+  #hud { display: flex; gap: 24px; margin-bottom: 8px; }
+  canvas { background: #1f2937; border-radius: 8px; width: 100%; max-width: 400px; touch-action: none; }
+  #status { margin-top: 8px; min-height: 1.5em; text-align: center; }
+&lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;div id=&quot;hud&quot;&gt;Score: &lt;span id=&quot;score&quot;&gt;0&lt;/span&gt; Best: &lt;span id=&quot;best&quot;&gt;0&lt;/span&gt;&lt;/div&gt;
+&lt;canvas id=&quot;game&quot; width=&quot;400&quot; height=&quot;600&quot;&gt;&lt;/canvas&gt;
+&lt;p id=&quot;status&quot;&gt;Press Space or tap to start. Move with arrow keys, A/D, or drag.&lt;/p&gt;
+&lt;script&gt;
+// --- Setup ---
+const canvas = document.getElementById(&quot;game&quot;);
+const ctx = canvas.getContext(&quot;2d&quot;);
+const scoreEl = document.getElementById(&quot;score&quot;);
+const bestEl = document.getElementById(&quot;best&quot;);
+const statusEl = document.getElementById(&quot;status&quot;);
+
+// Numbers you can change to make the game easier or harder
+const PLAYER_SPEED = 6;    // pixels per frame
+const START_FALL_SPEED = 3; // how fast blocks fall at the start
+const SPAWN_EVERY = 40;    // frames between new blocks (smaller = more blocks)
+
+const player = { x: 180, y: 540, w: 40, h: 40 };
+let blocks = [];
+let keys = {};
+let score = 0;
+let frame = 0;
+let running = false;
+let best = Number(localStorage.getItem(&quot;dodgeBest&quot;)) || 0;
+bestEl.textContent = best;
+
+// --- Start or restart the game ---
+function startGame() {
+  blocks = [];
+  score = 0;
+  frame = 0;
+  player.x = (canvas.width - player.w) / 2;
+  scoreEl.textContent = score;
+  statusEl.textContent = &quot;Dodge the falling blocks!&quot;;
+  running = true;
+}
+
+// --- Add one new block at a random spot along the top ---
+function spawnBlock() {
+  const w = 30 + Math.random() * 50;
+  blocks.push({ x: Math.random() * (canvas.width - w), y: -40, w: w, h: 20 });
+}
+
+// --- True if two rectangles overlap ---
+function hits(a, b) {
+  return a.x &lt; b.x + b.w &amp;&amp; a.x + a.w &gt; b.x &amp;&amp; a.y &lt; b.y + b.h &amp;&amp; a.y + a.h &gt; b.y;
+}
+
+// --- Move everything and check for collisions ---
+function update() {
+  if (keys.ArrowLeft || keys.a) player.x -= PLAYER_SPEED;
+  if (keys.ArrowRight || keys.d) player.x += PLAYER_SPEED;
+  player.x = Math.max(0, Math.min(canvas.width - player.w, player.x));
+
+  frame++;
+  if (frame % SPAWN_EVERY === 0) spawnBlock();
+  const fallSpeed = START_FALL_SPEED + score * 0.1; // gets faster as you score
+
+  for (const b of blocks) {
+    b.y += fallSpeed;
+    if (hits(player, b)) return gameOver();
+  }
+  // Blocks that fell off the bottom count as dodged
+  const before = blocks.length;
+  blocks = blocks.filter(b =&gt; b.y &lt; canvas.height);
+  score += before - blocks.length;
+  scoreEl.textContent = score;
+}
+
+// --- End the round and save the best score ---
+function gameOver() {
+  running = false;
+  if (score &gt; best) {
+    best = score;
+    localStorage.setItem(&quot;dodgeBest&quot;, best);
+    bestEl.textContent = best;
+  }
+  statusEl.textContent = &quot;Game over! Score &quot; + score + &quot;. Press Space or tap to play again.&quot;;
+}
+
+// --- Draw the player and blocks ---
+function draw() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.fillStyle = &quot;#818cf8&quot;;
+  ctx.fillRect(player.x, player.y, player.w, player.h);
+  ctx.fillStyle = &quot;#f87171&quot;;
+  for (const b of blocks) ctx.fillRect(b.x, b.y, b.w, b.h);
+}
+
+// --- The game loop: runs about 60 times per second ---
+function loop() {
+  if (running) update();
+  draw();
+  requestAnimationFrame(loop);
+}
+
+// --- Keyboard controls ---
+document.addEventListener(&quot;keydown&quot;, e =&gt; {
+  keys[e.key] = true;
+  if (e.key === &quot; &quot;) { e.preventDefault(); if (!running) startGame(); }
+  if (e.key.startsWith(&quot;Arrow&quot;)) e.preventDefault();
+});
+document.addEventListener(&quot;keyup&quot;, e =&gt; { keys[e.key] = false; });
+
+// --- Touch and mouse controls: drag to move, tap to start ---
+function moveTo(clientX) {
+  const rect = canvas.getBoundingClientRect();
+  const x = (clientX - rect.left) * (canvas.width / rect.width);
+  player.x = Math.max(0, Math.min(canvas.width - player.w, x - player.w / 2));
+}
+canvas.addEventListener(&quot;pointerdown&quot;, e =&gt; { if (!running) startGame(); moveTo(e.clientX); });
+canvas.addEventListener(&quot;pointermove&quot;, e =&gt; { if (e.buttons || e.pointerType === &quot;touch&quot;) moveTo(e.clientX); });
+
+loop();
+&lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
+</pre><button class="btn small-btn" data-copy>Copy code</button> <a class="btn ghost small-btn" href="demos/dodge.html" download="index.html">Download index.html</a></article>
+<h2 class="mt">Common problems</h2><dl class="faq"><dt>The page scrolls when I press Space or the arrows</dt><dd>Call <code>e.preventDefault()</code> for those keys in the keydown handler (the final code does this).</dd><dt>The game runs faster on some screens</dt><dd>This code moves things a fixed amount per frame, and some screens show 120 frames per second instead of 60. A good next step: ask the AI to "use delta time from requestAnimationFrame so speed is the same on every screen".</dd><dt>Best score shows NaN</dt><dd><code>localStorage</code> returns text or <code>null</code>. Use <code>Number(localStorage.getItem("dodgeBest")) || 0</code>.</dd><dt>It gets slower over time</dt><dd>Blocks are never removed. Filter out blocks that are below the canvas each frame.</dd></dl>
+<h2 class="mt">Make it yours</h2><p>Pick one. Ask for it as a single small change, then test.</p><ul class="checks"><li>Add a coin that gives +5 points</li><li>Add three lives instead of instant game over</li><li>Add a simple sound with the Web Audio API when you get hit</li><li>Ask for delta-time movement so speed is the same on 60Hz and 120Hz screens</li></ul>
+<p class="muted small">Want to share it? Our <a href="recipes.html#ship">ship-it recipe</a> shows how to put it online with GitHub Pages (GitHub requires users to be 13+, so younger builders need a parent's account).</p></section><section class="wrap section"><div class="card flat cta"><span class="tag">Coming with Agentwise Pro</span><h2>Want more guides like this?</h2><p>Pro will add more full project guides and the 100-prompt Game Builder Pack. It isn't for sale yet. Join the waitlist and we'll email you once when it launches.</p><p><a class="btn" href="pro.html">See what's in Pro</a></p></div></section></main>
+<footer class="site-footer"><div class="wrap foot"><div class="foot-brand"><a class="logo" href="index.html"><span class="dot"></span>Agentwise</a><p class="muted small">Step-by-step guides for building games and small apps with AI. A young, independent project.</p></div>
+<nav class="foot-nav" aria-label="Footer"><div><h4>Build</h4><a href="guides.html">Project guides</a><a href="recipes.html">Agent recipes</a><a href="starter-kit.html">Game Jam Starter Kit</a><a href="prompts.html">Prompts</a><a href="lessons.html">Lessons</a></div><div><h4>Choose tools</h4><a href="compare.html">Compare tools</a><a href="prices.html">Prices</a><a href="tools.html">Tools directory</a><a href="use-cases.html">Use cases</a></div><div><h4>News</h4><a href="daily.html">Daily feed</a><a href="newsletter.html">Newsletter</a></div><div><h4>Agentwise</h4><a href="index.html">Home</a><a href="pro.html">Pro (waitlist)</a><a href="about.html">About</a><a href="about.html#money">How we make money</a><a href="about.html#privacy">Privacy</a></div></nav></div><div class="wrap"><p class="muted small">© 2026 Agentwise. No ads. No affiliate links right now; if we add any, they will be labeled (<a href="about.html#money">how we make money</a>). Opinions are ours and not for sale. Tool names belong to their owners.</p></div></footer>
+<script src="main.js" defer></script></body></html>
