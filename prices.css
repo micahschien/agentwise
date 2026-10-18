@@ -1,0 +1,10 @@
+.table-wrap{overflow-x:auto;border:1px solid var(--border);border-radius:var(--r)}
+.ptable{width:100%;border-collapse:collapse;font-size:.92rem;min-width:760px}
+.ptable th,.ptable td{text-align:left;padding:12px 14px;border-bottom:1px solid var(--border);vertical-align:top}
+.ptable th{background:var(--soft);font-weight:600;white-space:nowrap}
+.ptable th[data-k]{cursor:pointer}.ptable th[aria-sort]{color:var(--accent)}
+.ptable small{display:block;color:var(--muted);font-size:.78rem;margin-top:2px}
+.ptable a{color:var(--accent)}
+.badge.verified{color:#047857;background:#ecfdf5;border-color:#a7f3d0}
+.badge.partial{color:#b45309;background:#fffbeb;border-color:#fde68a}
+.badge.unverified{color:#6b7280;background:var(--soft)}
