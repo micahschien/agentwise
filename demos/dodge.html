@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Dodge</title>
+<style>
+  body { margin: 0; font-family: system-ui, sans-serif; background: #111827; color: #f9fafb;
+         display: flex; flex-direction: column; align-items: center; padding: 16px; }
+  #hud { display: flex; gap: 24px; margin-bottom: 8px; }
+  canvas { background: #1f2937; border-radius: 8px; width: 100%; max-width: 400px; touch-action: none; }
+  #status { margin-top: 8px; min-height: 1.5em; text-align: center; }
+</style>
+</head>
+<body>
+<div id="hud">Score: <span id="score">0</span> Best: <span id="best">0</span></div>
+<canvas id="game" width="400" height="600"></canvas>
+<p id="status">Press Space or tap to start. Move with arrow keys, A/D, or drag.</p>
+<script>
+// --- Setup ---
+const canvas = document.getElementById("game");
+const ctx = canvas.getContext("2d");
+const scoreEl = document.getElementById("score");
+const bestEl = document.getElementById("best");
+const statusEl = document.getElementById("status");
+
+// Numbers you can change to make the game easier or harder
+const PLAYER_SPEED = 6;    // pixels per frame
+const START_FALL_SPEED = 3; // how fast blocks fall at the start
+const SPAWN_EVERY = 40;    // frames between new blocks (smaller = more blocks)
+
+const player = { x: 180, y: 540, w: 40, h: 40 };
+let blocks = [];
+let keys = {};
+let score = 0;
+let frame = 0;
+let running = false;
+let best = Number(localStorage.getItem("dodgeBest")) || 0;
+bestEl.textContent = best;
+
+// --- Start or restart the game ---
+function startGame() {
+  blocks = [];
+  score = 0;
+  frame = 0;
+  player.x = (canvas.width - player.w) / 2;
+  scoreEl.textContent = score;
+  statusEl.textContent = "Dodge the falling blocks!";
+  running = true;
+}
+
+// --- Add one new block at a random spot along the top ---
+function spawnBlock() {
+  const w = 30 + Math.random() * 50;
+  blocks.push({ x: Math.random() * (canvas.width - w), y: -40, w: w, h: 20 });
+}
+
+// --- True if two rectangles overlap ---
+function hits(a, b) {
+  return a.x < b.x + b.w && a.x + a.w > b.x && a.y < b.y + b.h && a.y + a.h > b.y;
+}
+
+// --- Move everything and check for collisions ---
+function update() {
+  if (keys.ArrowLeft || keys.a) player.x -= PLAYER_SPEED;
+  if (keys.ArrowRight || keys.d) player.x += PLAYER_SPEED;
+  player.x = Math.max(0, Math.min(canvas.width - player.w, player.x));
+
+  frame++;
+  if (frame % SPAWN_EVERY === 0) spawnBlock();
+  const fallSpeed = START_FALL_SPEED + score * 0.1; // gets faster as you score
+
+  for (const b of blocks) {
+    b.y += fallSpeed;
+    if (hits(player, b)) return gameOver();
+  }
+  // Blocks that fell off the bottom count as dodged
+  const before = blocks.length;
+  blocks = blocks.filter(b => b.y < canvas.height);
+  score += before - blocks.length;
+  scoreEl.textContent = score;
+}
+
+// --- End the round and save the best score ---
+function gameOver() {
+  running = false;
+  if (score > best) {
+    best = score;
+    localStorage.setItem("dodgeBest", best);
+    bestEl.textContent = best;
+  }
+  statusEl.textContent = "Game over! Score " + score + ". Press Space or tap to play again.";
+}
+
+// --- Draw the player and blocks ---
+function draw() {
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  ctx.fillStyle = "#818cf8";
+  ctx.fillRect(player.x, player.y, player.w, player.h);
+  ctx.fillStyle = "#f87171";
+  for (const b of blocks) ctx.fillRect(b.x, b.y, b.w, b.h);
+}
+
+// --- The game loop: runs about 60 times per second ---
+function loop() {
+  if (running) update();
+  draw();
+  requestAnimationFrame(loop);
+}
+
+// --- Keyboard controls ---
+document.addEventListener("keydown", e => {
+  keys[e.key] = true;
+  if (e.key === " ") { e.preventDefault(); if (!running) startGame(); }
+  if (e.key.startsWith("Arrow")) e.preventDefault();
+});
+document.addEventListener("keyup", e => { keys[e.key] = false; });
+
+// --- Touch and mouse controls: drag to move, tap to start ---
+function moveTo(clientX) {
+  const rect = canvas.getBoundingClientRect();
+  const x = (clientX - rect.left) * (canvas.width / rect.width);
+  player.x = Math.max(0, Math.min(canvas.width - player.w, x - player.w / 2));
+}
+canvas.addEventListener("pointerdown", e => { if (!running) startGame(); moveTo(e.clientX); });
+canvas.addEventListener("pointermove", e => { if (e.buttons || e.pointerType === "touch") moveTo(e.clientX); });
+
+loop();
+</script>
+</body>
+</html>

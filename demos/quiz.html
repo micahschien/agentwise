@@ -1,0 +1,102 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Quiz</title>
+<style>
+  body { margin: 0; font-family: system-ui, sans-serif; background: #f9fafb; color: #111827; }
+  main { max-width: 520px; margin: 40px auto; padding: 0 16px; }
+  .card { background: #fff; border: 1px solid #e5e7eb; border-radius: 12px; padding: 24px; }
+  #answers { display: grid; gap: 8px; margin: 16px 0; }
+  #answers button, #next { font: inherit; padding: 12px; border-radius: 8px; border: 1px solid #e5e7eb;
+                           background: #fff; cursor: pointer; text-align: left; }
+  #answers button.right { background: #dcfce7; border-color: #16a34a; }
+  #answers button.wrong { background: #fee2e2; border-color: #dc2626; }
+  #next { background: #4f46e5; color: #fff; border: 0; text-align: center; width: 100%; }
+  .muted { color: #6b7280; }
+</style>
+</head>
+<body>
+<main>
+  <div class="card">
+    <p class="muted" id="progress"></p>
+    <h2 id="question"></h2>
+    <div id="answers"></div>
+    <p id="feedback" role="status"></p>
+    <button id="next" hidden>Next</button>
+  </div>
+</main>
+<script>
+// --- Your questions: edit these to make your own quiz ---
+// "correct" is the position of the right answer, starting from 0.
+const QUESTIONS = [
+  { q: "What does HTML mainly describe?", a: ["The structure of a page", "Database tables", "Computer memory", "Image pixels"], correct: 0 },
+  { q: "Which language makes a web page interactive?", a: ["CSS", "JavaScript", "PNG", "SQL"], correct: 1 },
+  { q: "What does CSS control?", a: ["Server speed", "Passwords", "How the page looks", "File names"], correct: 2 },
+  { q: "Where can a web page save small data in your browser?", a: ["In the URL bar", "localStorage", "The printer", "The mouse"], correct: 1 },
+  { q: "What should you do after an AI writes code for you?", a: ["Publish it right away", "Delete it", "Run it and test it", "Ignore errors"], correct: 2 }
+];
+
+const progressEl = document.getElementById("progress");
+const questionEl = document.getElementById("question");
+const answersEl = document.getElementById("answers");
+const feedbackEl = document.getElementById("feedback");
+const nextBtn = document.getElementById("next");
+
+let index = 0;
+let score = 0;
+
+// --- Show the current question and its answer buttons ---
+function showQuestion() {
+  const item = QUESTIONS[index];
+  progressEl.textContent = "Question " + (index + 1) + " of " + QUESTIONS.length;
+  questionEl.textContent = item.q;
+  feedbackEl.textContent = "";
+  nextBtn.hidden = true;
+  answersEl.innerHTML = "";
+  item.a.forEach((text, i) => {
+    const btn = document.createElement("button");
+    btn.textContent = text;
+    btn.addEventListener("click", () => choose(i));
+    answersEl.appendChild(btn);
+  });
+}
+
+// --- Check the answer the player clicked ---
+function choose(i) {
+  const item = QUESTIONS[index];
+  const buttons = answersEl.querySelectorAll("button");
+  buttons.forEach(b => (b.disabled = true));
+  buttons[item.correct].classList.add("right");
+  if (i === item.correct) {
+    score++;
+    feedbackEl.textContent = "Correct!";
+  } else {
+    buttons[i].classList.add("wrong");
+    feedbackEl.textContent = "Not quite. The answer is: " + item.a[item.correct];
+  }
+  nextBtn.textContent = index === QUESTIONS.length - 1 ? "See my score" : "Next";
+  nextBtn.hidden = false;
+}
+
+// --- Go to the next question, or show the final score ---
+nextBtn.addEventListener("click", () => {
+  if (nextBtn.textContent === "Play again") {
+    index = 0;
+    score = 0;
+    return showQuestion();
+  }
+  index++;
+  if (index < QUESTIONS.length) return showQuestion();
+  progressEl.textContent = "Finished";
+  questionEl.textContent = "You scored " + score + " out of " + QUESTIONS.length;
+  answersEl.innerHTML = "";
+  feedbackEl.textContent = score === QUESTIONS.length ? "Perfect score!" : "Try again to beat it.";
+  nextBtn.textContent = "Play again";
+});
+
+showQuestion();
+</script>
+</body>
+</html>

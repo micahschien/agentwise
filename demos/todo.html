@@ -1,0 +1,96 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>To-do list</title>
+<style>
+  body { margin: 0; font-family: system-ui, sans-serif; background: #f9fafb; color: #111827; }
+  main { max-width: 520px; margin: 40px auto; padding: 0 16px; }
+  form { display: flex; gap: 8px; }
+  input[type=text] { flex: 1; min-width: 0; padding: 12px; font: inherit; border: 1px solid #e5e7eb; border-radius: 8px; }
+  button { font: inherit; padding: 10px 14px; border-radius: 8px; border: 0; background: #4f46e5; color: #fff; cursor: pointer; }
+  ul { list-style: none; padding: 0; }
+  li { display: flex; align-items: center; gap: 10px; background: #fff; border: 1px solid #e5e7eb;
+       border-radius: 8px; padding: 10px 12px; margin: 8px 0; }
+  li span { flex: 1; overflow-wrap: anywhere; }
+  li.done span { text-decoration: line-through; color: #9ca3af; }
+  li button { background: none; color: #dc2626; padding: 4px 8px; }
+  #footer { display: flex; justify-content: space-between; align-items: center; color: #6b7280; }
+  #clear { background: none; color: #4f46e5; padding: 4px 0; }
+</style>
+</head>
+<body>
+<main>
+  <h1>My to-do list</h1>
+  <form id="add-form">
+    <input id="new-task" type="text" placeholder="What do you need to do?" aria-label="New task" maxlength="200">
+    <button type="submit">Add</button>
+  </form>
+  <ul id="list"></ul>
+  <div id="footer"><span id="count"></span><button id="clear" type="button">Clear done</button></div>
+</main>
+<script>
+// --- Load saved tasks (or start with an empty list) ---
+// Each task looks like: { text: "Feed the cat", done: false }
+let tasks = JSON.parse(localStorage.getItem("tasks") || "[]");
+
+const form = document.getElementById("add-form");
+const input = document.getElementById("new-task");
+const list = document.getElementById("list");
+const count = document.getElementById("count");
+
+// --- Save tasks so they survive a page reload ---
+function save() {
+  localStorage.setItem("tasks", JSON.stringify(tasks));
+}
+
+// --- Rebuild the list on the page from the tasks array ---
+function render() {
+  list.innerHTML = "";
+  tasks.forEach((task, i) => {
+    const li = document.createElement("li");
+    if (task.done) li.className = "done";
+
+    const box = document.createElement("input");
+    box.type = "checkbox";
+    box.checked = task.done;
+    box.setAttribute("aria-label", "Done");
+    box.addEventListener("change", () => { task.done = box.checked; save(); render(); });
+
+    const label = document.createElement("span");
+    label.textContent = task.text; // textContent is safe: it never runs HTML
+
+    const del = document.createElement("button");
+    del.textContent = "Delete";
+    del.addEventListener("click", () => { tasks.splice(i, 1); save(); render(); });
+
+    li.append(box, label, del);
+    list.appendChild(li);
+  });
+  const left = tasks.filter(t => !t.done).length;
+  count.textContent = left + (left === 1 ? " task left" : " tasks left");
+}
+
+// --- Add a new task when the form is submitted ---
+form.addEventListener("submit", e => {
+  e.preventDefault();
+  const text = input.value.trim();
+  if (!text) return;
+  tasks.push({ text: text, done: false });
+  input.value = "";
+  save();
+  render();
+});
+
+// --- Remove every finished task ---
+document.getElementById("clear").addEventListener("click", () => {
+  tasks = tasks.filter(t => !t.done);
+  save();
+  render();
+});
+
+render();
+</script>
+</body>
+</html>
