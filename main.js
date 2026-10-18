@@ -16,8 +16,8 @@ document.querySelectorAll('[data-signup]').forEach(f=>f.addEventListener('submit
   const btn=f.querySelector('button');btn&&(btn.disabled=true);
   try{
     await fetch(SIGNUP_URL,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/x-www-form-urlencoded'},
-      body:new URLSearchParams({email:v,source:getRef()||f.id||location.pathname})});
-    m.textContent="You're in! Thanks for subscribing.";f.reset();
+      body:new URLSearchParams(f.dataset.source?Object.assign({email:v,source:f.dataset.source},getRef()?{ref:getRef()}:{}):{email:v,source:getRef()||f.id||location.pathname})});
+    m.textContent=f.dataset.source==='pro-waitlist'?"You're in! We'll email you once when Pro launches.":"You're in! Thanks for subscribing.";f.reset();
   }catch(err){m.textContent='Something went wrong. Please try again in a moment.'}
   finally{btn&&(btn.disabled=false)}
 }));
@@ -25,7 +25,7 @@ document.querySelectorAll('[data-signup]').forEach(f=>f.addEventListener('submit
 document.querySelectorAll('[data-copy]').forEach(b=>b.addEventListener('click',async()=>{
   const t=b.closest('.prompt').querySelector('.prompt-text').textContent;
   try{await navigator.clipboard.writeText(t)}catch(e){const a=document.createElement('textarea');a.value=t;document.body.appendChild(a);a.select();document.execCommand('copy');a.remove()}
-  b.textContent='Copied!';setTimeout(()=>b.textContent='Copy prompt',1500)}));
+  const l=b.dataset.label||(b.dataset.label=b.textContent);b.textContent='Copied!';setTimeout(()=>b.textContent=l,1500)}));
 document.querySelectorAll('#cat-filters .chip').forEach(c=>c.addEventListener('click',()=>{
   document.querySelectorAll('#cat-filters .chip').forEach(x=>x.classList.toggle('active',x===c));
   document.querySelectorAll('.prompt').forEach(p=>p.hidden=!(c.dataset.cat==='all'||p.dataset.cat===c.dataset.cat))}));
