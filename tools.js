@@ -128,6 +128,24 @@ const TOOLS = [
     "url": "https://bolt.new"
   },
   {
+    "name": "Rosebud AI",
+    "category": "Game dev",
+    "description": "Browser game maker: describe a game or pick a template, then build and publish it without writing code.",
+    "url": "https://rosebud.ai"
+  },
+  {
+    "name": "Meshy",
+    "category": "Game dev",
+    "description": "Turns text or images into 3D models, with texturing, auto-rigging and exports for Unity, Unreal, Godot and Blender.",
+    "url": "https://www.meshy.ai"
+  },
+  {
+    "name": "Scenario",
+    "category": "Game dev",
+    "description": "Browser workspace for generating image, video, 3D and audio assets, including custom models trained on your own art.",
+    "url": "https://www.scenario.com"
+  },
+  {
     "name": "Midjourney",
     "category": "Image",
     "description": "Image generator known for stylized, artistic results.",
