@@ -128,6 +128,24 @@ const TOOLS = [
     "url": "https://bolt.new"
   },
   {
+    "name": "Google Antigravity",
+    "category": "Coding",
+    "description": "Google's agent-first coding tool, with a CLI and plugin marketplace.",
+    "url": "https://antigravity.google"
+  },
+  {
+    "name": "OpenAI Codex",
+    "category": "Coding",
+    "description": "OpenAI's coding agent, available inside ChatGPT.",
+    "url": "https://chatgpt.com/codex"
+  },
+  {
+    "name": "Jules",
+    "category": "Coding",
+    "description": "Google's autonomous coding agent that works on tasks in the background.",
+    "url": "https://jules.google"
+  },
+  {
     "name": "Rosebud AI",
     "category": "Game dev",
     "description": "Browser game maker: describe a game or pick a template, then build and publish it without writing code.",
